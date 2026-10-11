@@ -18,8 +18,8 @@ python app.py
 ```
 
 The terminal prints two addresses:
-- `http://localhost:5000` for the laptop
-- `http://192.168.x.x:5000` for phones on the **same Wi-Fi**. The QR codes point at this address.
+- `http://localhost:5001` for the laptop
+- `http://192.168.x.x:5001` for phones on the **same Wi-Fi**. The QR codes point at this address.
 
 If `cryptography` won't install, the app still works. It just stores data as plain text and says so in the page footer.
 

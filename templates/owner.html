@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Your dashboard{% endblock %}
+{% block head %}<meta http-equiv="refresh" content="8">{% endblock %}
+{% block wrapclass %}wide{% endblock %}
+{% block content %}
+<div class="card-head">
+  <div>
+    <h1 style="margin:0">{{ p.name }}</h1>
+    <p class="muted" style="margin:0">Blood group {{ p.blood_group }} · Emergency contact {{ p.contact_name }}, {{ p.contact_phone }}</p>
+  </div>
+  <div class="actions" style="margin:0">
+    <a class="btn ghost" href="{{ url_for('owner_edit', pid=p.id, k=k) }}">Edit details</a>
+    <a class="btn ghost" href="{{ url_for('card', pid=p.id, k=k) }}">Printable card</a>
+  </div>
+</div>
+
+<div class="grid-2">
+  <section class="panel">
+    <h2>Notifications</h2>
+    {% if notes %}
+      {% for n in notes %}
+      <div class="field"><span class="label">{{ n.ts|ist }}</span>{{ n.body }}</div>
+      {% endfor %}
+    {% else %}<p class="muted">Nothing yet. You are told each time someone opens your card or asks for your history.</p>{% endif %}
+  </section>
+
+  <section class="panel">
+    <h2>Notes added by hospitals</h2>
+    {% if records %}
+      <ul class="records">
+        {% for r in records %}<li><p style="margin:0">{{ r.note }}</p><span class="by">{{ r.author }}, {{ r.org }} · {{ r.ts|ist }}</span></li>{% endfor %}
+      </ul>
+    {% else %}<p class="muted">No notes yet. Verified doctors can add treatment notes after they treat you.</p>{% endif %}
+  </section>
+</div>
+
+<section class="panel">
+  <h2>Activity log</h2>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th>When</th><th>Level</th><th>Who</th><th>What</th></tr></thead>
+    <tbody>
+    {% for e in events %}
+      <tr>
+        <td>{{ e.ts|ist }}</td>
+        <td><span class="pill t{{ e.tier }}">{{ ['Public', 'Verified', 'Full history'][e.tier] }}</span></td>
+        <td>{{ e.actor }}</td>
+        <td>{{ e.action }}{% if e.detail %}<br><span class="fine">{{ e.detail }}</span>{% endif %}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</section>
+{% endblock %}

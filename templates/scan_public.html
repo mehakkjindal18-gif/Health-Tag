@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Medical emergency{% endblock %}
+{% block content %}
+<section class="alert-hero">
+  <h1>Medical emergency</h1>
+  <p>This person may need urgent help. Call an ambulance first, then their emergency contact.</p>
+  <a class="btn-call" href="tel:108">Call 108</a>
+</section>
+
+<section class="panel">
+  <h2>Emergency contact</h2>
+  <p class="contact-name">{{ p.contact_name }}</p>
+  {% if p.contact_relation %}<p class="muted">{{ p.contact_relation }}</p>{% endif %}
+  <a class="btn coral block" href="tel:{{ p.contact_phone }}">Call {{ p.contact_phone }}</a>
+</section>
+
+<section class="panel locked">
+  <h3>Are you a doctor or paramedic?</h3>
+  <p class="muted">Medical details are shown only to verified responders. Every view is logged and the owner is notified.</p>
+  <a class="btn ghost block" href="{{ url_for('pro_login', next=url_for('scan', pid=p.id)) }}">Verify and open the medical card</a>
+</section>
+{% endblock %}

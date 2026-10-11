@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}HealthTag{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  {% block head %}{% endblock %}
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="{{ url_for('home') }}">
+      <span class="mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 21s-7-4.6-9.3-9.2C1 8.4 3 5 6.3 5c2 0 3.7 1.1 5.7 3.2C14 6.1 15.7 5 17.7 5 21 5 23 8.4 21.3 11.8 19 16.4 12 21 12 21z"/></svg></span>
+      HealthTag
+    </a>
+    <nav>
+      <a href="{{ url_for('inbox') }}">Demo inbox</a>
+      {% if pro %}
+        <span class="who">{{ pro.name }}</span>
+        <a href="{{ url_for('pro_logout') }}">Sign out</a>
+      {% else %}
+        <a href="{{ url_for('pro_login') }}">Doctor or paramedic sign-in</a>
+      {% endif %}
+    </nav>
+  </div>
+</header>
+<main class="wrap {% block wrapclass %}{% endblock %}">
+  {% with msgs = get_flashed_messages() %}
+    {% if msgs %}<div class="notice error" role="alert">{% for m in msgs %}<p>{{ m }}</p>{% endfor %}</div>{% endif %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</main>
+<footer class="foot">
+  Prototype built. Text messages are simulated and appear in the demo inbox.
+  {% if ENCRYPTED %}Medical fields are encrypted in the database.{% else %}Encryption library not installed, so data is stored as plain text.{% endif %}
+</footer>
+</body>
+</html>

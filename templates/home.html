@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block wrapclass %}wide{% endblock %}
+{% block content %}
+<section class="hero">
+  <div>
+    <h1>The right details, in the right hands, within seconds</h1>
+    <p class="lead">A HealthTag QR code holds a person's blood group, allergies and emergency contact. Bystanders see only who to call. Verified doctors and paramedics see the emergency card. The full history opens only when the person's own contact says yes.</p>
+    <div class="actions">
+      <a class="btn coral" href="{{ url_for('register') }}">Create a HealthTag</a>
+      <a class="btn ghost" href="{{ url_for('pro_login') }}">Doctor or paramedic sign-in</a>
+    </div>
+  </div>
+  <div class="qr-card">
+    <img src="{{ url_for('qr_image', pid=demo_id) }}" alt="QR code for the demo patient">
+    <p style="margin-bottom:.3em"><b>Demo patient: Aarav</b></p>
+    <code>{{ BASE_URL }}/scan/{{ demo_id }}</code>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Run the demo</h2>
+  <ol class="steps">
+    <li>Scan the QR code with a phone, or open the link under it. You see only "Call 108" and the contact's number, with no medical data.</li>
+    <li>Sign in as a verified responder (ID <b>H-1001</b>, PIN <b>1234</b>) and scan again. The emergency card opens at once.</li>
+    <li>Tap <b>Request full history</b>. Then open the <a href="{{ url_for('inbox') }}">demo inbox</a>: the emergency contact has received a code and an approval link.</li>
+    <li>Approve on the link, or type the code into the responder's screen. The full history unlocks for 30 minutes.</li>
+    <li>Open the owner dashboard to see who looked, who approved, and every notification.</li>
+  </ol>
+  <div class="demo-links">
+    <a class="btn ghost" href="{{ url_for('scan', pid=demo_id) }}">Scan as a bystander</a>
+    <a class="btn ghost" href="{{ url_for('owner', pid=demo_id, k=demo_key) }}">Owner dashboard</a>
+    <a class="btn ghost" href="{{ url_for('card', pid=demo_id, k=demo_key) }}">Printable card</a>
+    <a class="btn ghost" href="{{ url_for('inbox') }}">Demo inbox</a>
+  </div>
+</section>
+{% endblock %}

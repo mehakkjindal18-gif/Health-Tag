@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Approve access{% endblock %}
+{% block content %}
+{% if r.status == 'pending' %}
+  <h1>Someone is asking to see {{ p.name }}'s medical history</h1>
+  <section class="panel">
+    <p>You are listed as {{ p.name }}'s emergency contact.</p>
+    <p><b>{{ r.requester_name }}</b> from <b>{{ r.requester_org }}</b> is asking to open the full history: past conditions, notes and hospital records.</p>
+    <p class="fine">If you approve, they can see it for 30 minutes. {{ p.name }} is told who asked and who approved. If you don't know why they are asking, deny.</p>
+    <form method="post">
+      <div class="actions">
+        <button class="btn teal" name="decision" value="approve" type="submit">Approve access</button>
+        <button class="btn ghost" name="decision" value="deny" type="submit">Deny</button>
+      </div>
+    </form>
+  </section>
+{% elif r.status == 'approved' %}
+  <h1>Access approved</h1>
+  <section class="panel">
+    <p>{{ r.requester_name }} from {{ r.requester_org }} can now see {{ p.name }}'s full history for 30 minutes.</p>
+    <p class="fine">{{ p.name }} can see this approval in their activity log.</p>
+  </section>
+{% elif r.status == 'denied' %}
+  <h1>Access denied</h1>
+  <section class="panel"><p>The full history stays locked. {{ p.name }} has been told.</p></section>
+{% else %}
+  <h1>This request has expired</h1>
+  <section class="panel"><p>Nothing was shared. If it was urgent, the responder can send a new request.</p></section>
+{% endif %}
+{% endblock %}

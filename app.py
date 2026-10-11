@@ -73,7 +73,8 @@ app.secret_key = _load_or_create(SECRET_PATH, lambda: secrets.token_hex(32))
 # 'cryptography' package is not installed.
 try:
     from cryptography.fernet import Fernet
-    _fernet = Fernet(_load_or_create(KEY_PATH, lambda: Fernet.generate_key().decode()).encode())
+    _key = os.environ.get("HEALTHTAG_ENC_KEY") or _load_or_create(KEY_PATH, lambda: Fernet.generate_key().decode())
+    _fernet = Fernet(_key.encode())
     ENCRYPTED = True
 except ImportError:
     _fernet = None

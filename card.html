@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Your HealthTag{% endblock %}
+{% block content %}
+<h1 class="no-print">Your HealthTag is ready</h1>
+<p class="muted no-print">Print this card, keep it in your wallet, or save the image as a lock-screen wallpaper. Anyone can scan it, but what they see depends on who they are.</p>
+
+<div class="id-card">
+  <img src="{{ url_for('qr_image', pid=p.id) }}" alt="QR code for {{ p.name }}">
+  <div>
+    <p class="tag">HealthTag · scan in an emergency</p>
+    <h2>{{ p.name }}</h2>
+    <p class="fine" style="margin:0">Code {{ p.id }}</p>
+  </div>
+</div>
+
+<div class="actions no-print">
+  <button class="btn" onclick="window.print()" type="button">Print card</button>
+  <a class="btn teal" href="{{ url_for('owner', pid=p.id, k=k) }}">Open my dashboard</a>
+</div>
+
+<div class="panel locked no-print">
+  <h3>Save your private link</h3>
+  <p class="fine">This link opens your dashboard, where you see who scanned your code and who approved access. Keep it to yourself.</p>
+  <code style="word-break:break-all;font-size:.85rem">{{ BASE_URL }}{{ url_for('owner', pid=p.id, k=k) }}</code>
+</div>
+{% endblock %}

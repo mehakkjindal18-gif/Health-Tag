@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Demo inbox{% endblock %}
+{% block head %}<meta http-equiv="refresh" content="4">{% endblock %}
+{% block content %}
+<h1>Demo inbox</h1>
+<p class="muted">In the live system these go out as SMS or WhatsApp messages and app notifications. For the demo they land here. This page refreshes on its own.</p>
+
+{% for m in messages %}
+<article class="msg {{ m.kind }}">
+  <div class="meta">{{ 'Text message to' if m.kind == 'contact' else 'App notification to' }} {{ m.to_label }} · {{ m.ts|ist }}</div>
+  <p>{{ m.body }}</p>
+  {% if m.link %}<a class="btn teal" href="{{ m.link }}">Open approval link</a>{% endif %}
+</article>
+{% else %}
+<div class="panel"><p class="muted">No messages yet. They appear when a responder requests a full history.</p></div>
+{% endfor %}
+{% endblock %}

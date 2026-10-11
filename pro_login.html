@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Doctor or paramedic sign-in{% endblock %}
+{% block content %}
+<h1>Doctor or paramedic sign-in</h1>
+<p class="muted">Only verified hospital and ambulance staff can open the medical card. Your ID is recorded on every scan.</p>
+<form method="post" class="panel">
+  <input type="hidden" name="next" value="{{ nxt }}">
+  <div class="row"><label for="cred">Professional ID</label>
+    <input id="cred" name="cred" type="text" autocomplete="username" autocapitalize="characters" required></div>
+  <div class="row"><label for="pin">PIN</label>
+    <input id="pin" name="pin" type="password" autocomplete="current-password" inputmode="numeric" required></div>
+  <button class="btn block" type="submit">Sign in</button>
+</form>
+<div class="panel locked">
+  <h3>Prototype sign-ins</h3>
+  <p class="fine" style="margin-bottom:.4em"><b>H-1001</b> / 1234: Dr. Anita Verma, Apollo Hospital</p>
+  <p class="fine" style="margin-bottom:.4em"><b>A-2002</b> / 1234: Ravi Kumar, 108 Ambulance Service</p>
+  <p class="fine">In the real system these IDs are checked against hospital and ambulance registries when staff register.</p>
+</div>
+{% endblock %}

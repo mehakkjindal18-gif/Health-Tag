@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Emergency card{% endblock %}
+{% block content %}
+<div class="verified">Verified as <b>{{ pro.name }}, {{ pro.org }}</b>. This view is logged against your ID and the owner is notified.</div>
+
+{% if added %}<div class="notice ok"><p>Your note was added to the record.</p></div>{% endif %}
+
+<section class="panel">
+  <div class="card-head">
+    <h1>{{ p.name }}{% if p.age %}<span class="muted" style="font-size:1rem;font-weight:400"> · {{ p.age }} yrs</span>{% endif %}</h1>
+    <span class="pill t1">Emergency card</span>
+  </div>
+
+  <div class="blood-row">
+    <div class="blood"><b>{{ p.blood_group }}</b><span>Blood group</span></div>
+    <div>
+      <div class="field">
+        <span class="label">Allergies</span>
+        {% if p.allergies %}<ul class="chips">{% for a in p.allergies|chips %}<li>{{ a }}</li>{% endfor %}</ul>{% else %}<span class="muted">None recorded</span>{% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="field">
+    <span class="label">Conditions</span>
+    {% if p.conditions %}<ul class="chips calm">{% for c in p.conditions|chips %}<li>{{ c }}</li>{% endfor %}</ul>{% else %}<span class="muted">None recorded</span>{% endif %}
+  </div>
+  <div class="field">
+    <span class="label">Medications</span>
+    {% if p.medications %}<ul class="chips calm">{% for m in p.medications|chips %}<li>{{ m }}</li>{% endfor %}</ul>{% else %}<span class="muted">None recorded</span>{% endif %}
+  </div>
+  <div class="field">
+    <span class="label">Emergency contact</span>
+    <a href="tel:{{ p.contact_phone }}"><b>{{ p.contact_name }}</b>{% if p.contact_relation %} ({{ p.contact_relation }}){% endif %} · {{ p.contact_phone }}</a>
+  </div>
+</section>
+
+{% if until %}
+<section class="panel">
+  <div class="card-head">
+    <h2 style="margin:0">Full history</h2>
+    <span class="pill t2">Approved by {{ p.contact_name }}</span>
+  </div>
+  <p class="fine">Access ends at {{ until|ist }}.</p>
+  <div class="field">
+    <span class="label">Medical history</span>
+    <p>{{ p.history or "Nothing recorded." }}</p>
+  </div>
+  <div class="field">
+    <span class="label">Hospital records</span>
+    {% if records %}
+    <ul class="records">
+      {% for r in records %}
+      <li><p style="margin:0">{{ r.note }}</p><span class="by">{{ r.author }}, {{ r.org }} · {{ r.ts|ist }}</span></li>
+      {% endfor %}
+    </ul>
+    {% else %}<span class="muted">No records added yet.</span>{% endif %}
+  </div>
+</section>
+{% elif pending %}
+<section class="panel locked">
+  <h2>Full history: waiting for approval</h2>
+  <p class="muted">{{ p.contact_name }} has been sent a code and an approval link.</p>
+  <a class="btn teal block" href="{{ url_for('request_wait', rid=pending.id) }}">Check status or enter the code</a>
+</section>
+{% else %}
+<section class="panel locked">
+  <h2>Full history is locked</h2>
+  <p class="muted">Past conditions, notes and hospital records need approval from {{ p.contact_name }}, the emergency contact. They receive a code and an approval link.</p>
+  <form method="post" action="{{ url_for('request_full_history', pid=p.id) }}">
+    <button class="btn teal block" type="submit">Request full history</button>
+  </form>
+</section>
+{% endif %}
+
+<section class="panel">
+  <h2>Add a note to the record</h2>
+  <p class="muted">Treatment notes are saved to this person's record. They see them in their activity log.</p>
+  <form method="post" action="{{ url_for('add_record', pid=p.id) }}">
+    <div class="row"><label for="note">Note</label>
+      <textarea id="note" name="note" maxlength="1000" required placeholder="e.g. Admitted after road accident. Given IV fluids. Blood sugar 68 mg/dL on arrival."></textarea></div>
+    <button class="btn" type="submit">Save note</button>
+  </form>
+</section>
+{% endblock %}

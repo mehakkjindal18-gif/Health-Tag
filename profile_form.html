@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit your details' if editing else 'Create a HealthTag' }}{% endblock %}
+{% block content %}
+<h1>{{ 'Edit your details' if editing else 'Create your HealthTag' }}</h1>
+<p class="muted">Anyone who scans your code sees only your emergency contact. Blood group, allergies, conditions and medications go to verified doctors and paramedics. Your history opens only when your emergency contact approves.</p>
+
+<form method="post" class="panel">
+  {% if editing %}<input type="hidden" name="k" value="{{ k }}">{% endif %}
+  <div class="two">
+    <div class="row"><label for="name">Full name</label>
+      <input id="name" name="name" type="text" value="{{ form.name }}" autocomplete="name" required></div>
+    <div class="row"><label for="age">Age <span class="opt">(optional)</span></label>
+      <input id="age" name="age" type="number" min="0" max="120" value="{{ form.age }}"></div>
+  </div>
+  <div class="row"><label for="blood_group">Blood group</label>
+    <select id="blood_group" name="blood_group" required>
+      <option value="">Choose one</option>
+      {% for b in blood_groups %}<option value="{{ b }}" {{ 'selected' if form.blood_group == b }}>{{ b }}</option>{% endfor %}
+    </select></div>
+  <div class="row"><label for="allergies">Allergies <span class="opt">(separate with commas)</span></label>
+    <input id="allergies" name="allergies" type="text" value="{{ form.allergies }}" placeholder="Penicillin, peanuts"></div>
+  <div class="row"><label for="conditions">Conditions <span class="opt">(separate with commas)</span></label>
+    <input id="conditions" name="conditions" type="text" value="{{ form.conditions }}" placeholder="Type 1 diabetes, asthma"></div>
+  <div class="row"><label for="medications">Medications <span class="opt">(separate with commas)</span></label>
+    <input id="medications" name="medications" type="text" value="{{ form.medications }}" placeholder="Insulin (daily)"></div>
+
+  <h2 style="margin-top:24px">Emergency contact</h2>
+  <div class="two">
+    <div class="row"><label for="contact_name">Name</label>
+      <input id="contact_name" name="contact_name" type="text" value="{{ form.contact_name }}" required></div>
+    <div class="row"><label for="contact_relation">Relationship <span class="opt">(optional)</span></label>
+      <input id="contact_relation" name="contact_relation" type="text" value="{{ form.contact_relation }}" placeholder="Mother"></div>
+  </div>
+  <div class="row"><label for="contact_phone">Phone number</label>
+    <input id="contact_phone" name="contact_phone" type="tel" value="{{ form.contact_phone }}" placeholder="+91 98XXXXXXXX" autocomplete="tel" required>
+    <p class="help">This contact approves requests for your full history, so pick someone who usually answers.</p></div>
+
+  <h2 style="margin-top:24px">Full history</h2>
+  <div class="row"><label for="history">Past surgeries, vaccinations, other notes <span class="opt">(optional)</span></label>
+    <textarea id="history" name="history" maxlength="2000">{{ form.history }}</textarea>
+    <p class="help">Shown only after your emergency contact approves.</p></div>
+
+  <button class="btn coral block" type="submit">{{ 'Save changes' if editing else 'Create my HealthTag' }}</button>
+</form>
+{% endblock %}

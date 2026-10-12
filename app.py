@@ -98,10 +98,15 @@ def dec(text):
 
 
 # --------------------------------------------------------------------------- database
+import libsql
+
 def db():
     if "db" not in g:
-        g.db = sqlite3.connect(DB_PATH)
-        g.db.row_factory = sqlite3.Row
+        g.db = libsql.connect(
+            "healthtag.db",
+            sync_url=os.environ["TURSO_DATABASE_URL"],
+            auth_token=os.environ["TURSO_AUTH_TOKEN"],
+        )
     return g.db
 
 

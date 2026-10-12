@@ -37,7 +37,7 @@ TEXT_FIELDS = ["name", "age", "blood_group", "allergies", "conditions", "medicat
                "contact_name", "contact_relation", "contact_phone", "history"]
 
 DEMO_OWNER_KEY = "demo-owner-key"   # fixed so the home page can link the demo patient
-DEMO_PROFILE_ID = "LBNAPH0"
+DEMO_PROFILE_ID = "Aarav1"
 
 
 # --------------------------------------------------------------------------- setup
